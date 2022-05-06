@@ -1,0 +1,5 @@
+nome = quem?
+
+for i in enumerate(time):
+    if nome == time[i]["nome"]:
+        ...
