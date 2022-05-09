@@ -5,23 +5,39 @@ def cadastrar():
     global a_carteira
     global b_carteira
     global proximo
+    global afirm
     print('-'*20)
     proximo = True
     while True:
         afirm = True
         try:
             jogador["nome"] = input('Digite o nome do jogador: ').lower().capitalize()
+            print(jogador["nome"])
         except KeyboardInterrupt:
             print("\n[#ff6f00]O usuário não quis mais cadastrar.[/]\n")
             proximo = False
             break
         else:
-            if len(jogador["nome"]) == 0:
-                print("[bold red]Valor invalido![/]")
-            else:
-                for r in jogador["nome"]:
-                    if r == " ":
-                        afirm = False
+
+            def nulo(nome):
+                global afirm
+                if len(nome) == 0:
+                    afirm = False
+                    print(afirm)
+                print(afirm)
+
+            nulo(jogador["nome"])
+
+            if afirm == True:
+                def espaço(nome):
+                    global afirm
+                    print("\nentrou aqui.\n")
+                    for r in nome:
+                        if r == " ":
+                            afirm = False
+
+                espaço(jogador['nome'])
+
                 if afirm == False:
                     print("[bold red]Valor invalido![/]")
                 else:
@@ -71,6 +87,9 @@ def cadastrar():
                                 print("[bold red]É permitido apenas três nomes e no minimo dois nomes![/]\n")
                             else:
                                 break
+            else:
+                print("[bold red]Valor invalido![/]")
+
 
     if proximo == True:
         while True:
