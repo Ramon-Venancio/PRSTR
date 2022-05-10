@@ -114,20 +114,20 @@ def cadastrar():
                 proximo = False
                 break
             else:
-                for r in jogador['nacionalidade']:
-                    if r == " ":
-                        afirm = False
-                if afirm == False:
-                    print("[bold red]Digite uma nacionalidade valida![/]\n")
-                else:
-                    if len(jogador['nacionalidade']) == 0:
-                        print("[bold red]Digite uma nacionalidade valida![/]\n")
-                    else:
+                espaço(jogador['nacionalidade'])
+
+                if afirm == True:
+                    nulo(jogador['nacionalidade'])
+                    if afirm == True:
                         try:
                             jogador['nacionalidade'] = int(jogador['nacionalidade'])
                             print("[bold red]Digite uma nacionalidade valida![/]\n")
                         except:
                             break
+                    else:
+                        print("[bold red]Digite uma nacionalidade valida![/]\n")
+                else:
+                    print("[bold red]Digite uma nacionalidade valida![/]\n")
 
     if proximo == True:  
         while True:

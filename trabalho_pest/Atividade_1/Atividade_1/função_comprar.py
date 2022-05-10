@@ -62,7 +62,6 @@ def comprar():
                             continuar = int(input('Você quer:\n[1]Pesquisar novamente\nou\n[2]Desistir\n'))
                         except KeyboardInterrupt:
                             print("\n[#ff6f00]O usuário não quis mais continuar.[/]\n")
-                            proximo = False
                             break
                         except (ValueError,TypeError):
                             print("[bold red]Digite de acordo com as sugestões![/]")
@@ -98,24 +97,25 @@ def comprar():
                                     print('Jogador não encontrado')
 
             elif escolha == 'GOLS':
-                continuar = 1
-                while continuar == 1:
-                    gol = ''
-                    while gol == '':
+                while True:
+                    while True:
                         try:
                             gol = int(input('Digite a quantidade de gols minima: '))
-                        except:
+                        except KeyboardInterrupt:
+                            print("\n[#ff6f00]O usuário não quis mais continuar.[/]\n")
+                            proximo = False
+                            break
+                        except(ValueError,TypeError):
                             print('Valor invalido! Apenas valores númericos')
-                    for i,dados in enumerate(B) :
-                        jogador_completo = dados
-                        posicao = i
-                        salario = dados['salario']
-                        nome = dados['nome']
-                        gols = dados['gols']
-                        if gols >= gol:
-                            print('-'*20)
-                            print(f'Nome: {nome}\nGols: {gols}')
-                    print('-'*20)
+                        else:
+                            for i,dados in enumerate(B):
+                                if dados['gols'] >= gol:
+                                    print("-"*20)
+                                    print(f'[bold blue]Nome: {dados["nome"]}[/]\n[bold #ff6f00]Idade: {dados["idade"]}[/]')
+                                    print(f'{"-"*20}\n')
+                                    jogadores.append(dados)
+                            break
+                                        
                     continuar = int(input('[1]Pesquisar novamente\n[2]Desistir\n[3]Comprar\nDigite um valor:'))
                     while continuar != 1 and continuar != 2 and continuar != 3:
                         continuar = int(input('[1]Pesquisar novamente\n[2]Desistir\n[3]Comprar\nDigite um valor:'))
