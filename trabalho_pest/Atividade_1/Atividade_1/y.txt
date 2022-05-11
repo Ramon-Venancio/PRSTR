@@ -1,0 +1,47 @@
+ if proximo == False:
+                        print("[bold red]Valor invalido![/]")
+                        proximo = True
+                    else:
+
+     def nulo(nome):
+                global afirm
+                if len(nome) == 0:
+                    afirm = False
+                   
+            nulo(jogador["nome"])
+
+                def espaço(nome):
+                    global afirm
+                    for r in nome:
+                        if r == " ":
+                            afirm = False
+
+def espaço(nome):
+    global afirm
+    for r in nome:
+        if r == " ":
+            afirm = False
+
+
+
+
+                    continuar = int(input('[1]Pesquisar novamente\n[2]Desistir\n[3]Comprar\nDigite um valor:'))
+                    while continuar != 1 and continuar != 2 and continuar != 3:
+                        continuar = int(input('[1]Pesquisar novamente\n[2]Desistir\n[3]Comprar\nDigite um valor:'))
+                    if continuar == 3:
+                        jogador = input('Qual jogador você se interessou?: ').lower().capitalize()
+                        for i,dados in enumerate(B):
+                            nome = dados['nome']
+                            transferencia = i
+                            if nome == jogador:
+                                if a_carteira >= salario:
+                                    A.append(dados)
+                                    del B[transferencia]
+                                    a_carteira = a_carteira - salario
+                                    b_carteira = b_carteira + salario
+                                    print(f'Valor da carteira B foi atualizado: {b_carteira}')
+                                    print(f'Valor da carteira A foi atualizado: {a_carteira}')
+                                else:
+                                    print('Você não tem saldo suficiente!')
+                            else:
+                                print('Jogador não encontrado')
