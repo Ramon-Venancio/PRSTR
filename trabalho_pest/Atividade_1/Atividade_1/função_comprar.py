@@ -94,7 +94,7 @@ def comprar():
                                                 print('Você não tem saldo suficiente!')
                                         else:
                                             print('Jogador não encontrado')
-
+                                            
             elif escolha == 'GOLS':
                 while True:
                     try:
@@ -192,6 +192,7 @@ def comprar():
                                     print('Você não tem saldo suficiente!')
                             else:
                                 print('Jogador não encontrado')
+                                
     elif time == 'B':
         escolha = input('Digite o que você quer procurar(Idade/Gols/Salario): ').upper()
         while escolha != 'IDADE' and escolha != 'GOLS' and escolha != 'SALARIO':
