@@ -8,11 +8,11 @@ def menu():
     print(opcao)
 
 while True:
-    print('-'*20)
+    print('[bold #ff6f00]—[/]'*20)
     menu()
-    print('-'*20)
+    print('[bold #ff6f00]—[/]'*20)
     try:
-        opcao = int(input("Digite um valor(Apenas: 1 ou 2 ou 3): "))
+        opcao = int(input("Digite um valor(Apenas: 1, 2 ou 3): "))
     except (ValueError,TypeError):
         print('[bold red]Apenas valores númericos![/]')
     except KeyboardInterrupt:
@@ -26,5 +26,5 @@ while True:
         elif opcao == 3:
             visualizar()
         else:
-            print("-"*20)
+            print("—"*20)
             print("\n[bold red]Valor invalido![/]\n")

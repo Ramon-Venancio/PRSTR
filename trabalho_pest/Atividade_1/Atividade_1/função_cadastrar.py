@@ -29,7 +29,8 @@ def cadastrar():
                     for i,n in enumerate(nome_comp):
                         if len(n) == 0:
                             afirm = False
-
+                    print(len(nome_comp))
+                    
                     if afirm == True:
                         if len(nome_comp) < 2:
                             while True:
@@ -38,33 +39,37 @@ def cadastrar():
                                     composto = input(f'Digite um sobrenome para {jogador["nome"]}: ')
                                 except KeyboardInterrupt:
                                     print("\n[#ff6f00]O usuário não quis mais continuar.[/]\n")
-                                    afirm = False
+                                    proximo = False
                                     break
                                 else:
                                     if len(composto) == 0:
                                         print("[bold red]Valor invalido![/]")
                                     else:
-                                        for r in composto:
-                                            if r == " ":
+                                        sep = composto.split(" ")
+
+                                        for i,n in enumerate(sep):
+                                            if len(n) == 0:
                                                 afirm = False
 
-                                        if afirm == False:
-                                            print("[bold red]Valor invalido![/]")
-                                        else:
+                                        if afirm == True and len(sep) <= 2:
                                             try:
                                                 composto = int(composto)
                                                 print("\n[bold red]Apenas letras![/]\n")
                                             except (ValueError,TypeError):
                                                 break
-                                    
-                            if afirm == True:
-                                    nome_comp.append(composto)
-                                    nome_comp = nome_comp[0] + ' ' + nome_comp[1]   
-                                    jogador['nome'] = nome_comp.lower().capitalize()
-                                    break
+                                        else:
+                                            print("[bold red]Valor invalido![/]")
+                                                    
+                                                
+                            if proximo == True:
+                                nome_comp.append(composto)
+                                nome_comp = nome_comp[0] + ' ' + nome_comp[1]   
+                                jogador['nome'] = nome_comp.lower().capitalize()
+                                break
                             else:
                                 break
-                        elif len(nome_comp) > 3:
+
+                        elif len(nome_comp) >= 3:
                             print("[bold red]É permitido apenas três nomes e no minimo dois nomes![/]\n")
                         else:
                             break
@@ -111,7 +116,7 @@ def cadastrar():
                             break
                     else:
                         print("[bold red]Digite uma nacionalidade valida![/]\n")
-
+                        
     if proximo == True:  
         while True:
             try:

@@ -6,13 +6,17 @@ def comprar():
     global b_carteira
     proximo = True
     jogadores = []
-    time = input('Qual o seu time?(A/B): ').upper()
-    while time != 'A' and time != 'B':
-        try:
-            time = input('Qual o seu time?(Apenas time A ou B)?: ').upper()
-        except KeyboardInterrupt:
-            print("\n[#ff6f00]O usuário não quis mais continuar.[/]\n")
-            break
+    try:
+        time = input('Qual o seu time?(A/B): ').upper()
+    except KeyboardInterrupt:
+        print("\n[#ff6f00]O usuário não quis mais continuar.[/]\n")
+    else:
+        while time != 'A' and time != 'B':
+            try:
+                time = input('Qual o seu time?(Apenas time A ou B)?: ').upper()
+            except KeyboardInterrupt:
+                print("\n[#ff6f00]O usuário não quis mais continuar.[/]\n")
+                break
 
     if time == 'A':
         while proximo == True:
@@ -25,91 +29,102 @@ def comprar():
                 break
 
             if escolha == 'IDADE':
-                while afirm == True:
+                jogadores.clear()
+                try:
+                    minima = int(input('Digite idade minima: '))
+                except KeyboardInterrupt:
+                    print("\n[#ff6f00]O usuário não quis mais continuar.[/]\n")
+                    proximo = False
+                    break
+                except (ValueError,TypeError):
+                    print("[bold red]Valor invalido! Apenas valores númericos[/]")
+                else:
                     try:
-                        minima = int(input('Digite idade minima: '))
+                        maxima = int(input('Digite idade maxima: '))
                     except KeyboardInterrupt:
                         print("\n[#ff6f00]O usuário não quis mais continuar.[/]\n")
                         proximo = False
                         break
                     except (ValueError,TypeError):
-                        print("[bold red]Valor invalido! Apenas valores númericos[/]")
+                        print('\n[bold red]Valor invalido! Apenas valores númericos[/]\n')
                     else:
-                        try:
-                            maxima = int(input('Digite idade maxima: '))
-                        except KeyboardInterrupt:
-                            print("\n[#ff6f00]O usuário não quis mais continuar.[/]\n")
-                            proximo = False
-                            break
-                        except (ValueError,TypeError):
-                            print('\n[bold red]Valor invalido! Apenas valores númericos[/]\n')
-                        else:
-                            for i,dados in enumerate(B):
-                                if dados['idade'] >= minima and dados['idade'] <= maxima:
-                                    print("-"*20)
-                                    print(f'[bold blue]Nome: {dados["nome"]}[/]\n[bold #ff6f00]Idade: {dados["idade"]}[/]')
-                                    print(f'{"-"*20}\n')
-                                    jogadores.append(dados)
+                        for i,dados in enumerate(B):
+                            if dados['idade'] >= minima and dados['idade'] <= maxima:
+                                print("-"*20)
+                                print(f'[bold blue]Nome:[/] {dados["nome"]}\n[bold #ff6f00]Idade:[/] {dados["idade"]}\n[bold yellow]Sálario:[/] {dados["salario"]}')
+                                print(f'{"-"*20}\n')
+                                jogadores.append(dados)
 
-                            if len(jogadores) == 0:
-                                print("[bold red]Não exite um jogador com essa idade.[/]\n")
-                            else:
-                                while True:
-                                    try:
-                                        continuar = int(input('Você quer:\n[bold blue][1]Pesquisar novamente\n[bold #ff6f00][2]Desistir[/]\n[bold yellow][3]Comprar[/]'))
-                                    except KeyboardInterrupt:
-                                        print("\n[#ff6f00]O usuário não quis mais continuar.[/]\n")
+                        if len(jogadores) == 0:
+                            print("[bold red]Não exite um jogador com essa idade.[/]\n")
+                        else:
+                            while True:
+                                try:
+                                    print('Você quer:\n[1][bold blue]Pesquisar novamente[/]\n[2][bold #ff6f00]Desistir[/]\n[3][bold yellow]Comprar[/]')
+                                    continuar = int(input(": "))
+                                except KeyboardInterrupt:
+                                    print("\n[#ff6f00]O usuário não quis mais continuar.[/]\n")
+                                    proximo = False
+                                    afirm = False
+                                    break
+                                except (ValueError,TypeError):
+                                    print("[bold red]Digite apenas valores númericos![/]")
+                                else:
+                                    if continuar == 2:
+                                        afirm = False
                                         proximo = False
+                                        break
+                                    elif continuar == 1:
                                         afirm = False
                                         break
-                                    except (ValueError,TypeError):
-                                        print("[bold red]Digite apenas valores númericos![/]")
-                                    else:
-                                        if continuar == 2:
+                                    elif continuar == 3:
+                                        try:
+                                            jogador = input('Qual jogador você se interessou?: ').lower().capitalize()
+                                        except KeyboardInterrupt:
+                                            print("\n[#ff6f00]O usuário não quis mais continuar.[/]\n")
+                                            proximo = False
                                             afirm = False
                                             break
-                                        elif continuar == 1:
-                                            break
-                                        elif continuar == 3:
-                                            try:
-                                                jogador = input('Qual jogador você se interessou?: ').lower().capitalize()
-                                            except KeyboardInterrupt:
-                                                print("\n[#ff6f00]O usuário não quis mais continuar.[/]\n")
-                                                break
-                                            else:
-                                                for i,dados in enumerate(jogadores):
-                                                    transferencia = i
-                                                    salario = dados['salario']
-                                                    if dados['nome'] == jogador:
-                                                        if a_carteira[0] >= salario:
-                                                            A.append(dados)
-                                                            del B[transferencia]
-                                                            a_carteira[0] = a_carteira[0] - salario
-                                                            b_carteira[0] = b_carteira[0] + salario
-                                                            print(f'Valor da carteira B foi atualizado: {b_carteira[0]}')
-                                                            print(f'Valor da carteira A foi atualizado: {a_carteira[0]}')
-                                                            break
-                                                        else:
-                                                            print('Você não tem saldo suficiente!')
-                                                    else:
-                                                        print('Jogador não encontrado')
                                         else:
-                                            print("[bold red]Digite de acordo com as sugestões![/]")
-                                    
-                                if afirm == True:
-                                    try:
-                                        continuar = int(input('Você quer:\n[bold blue][1]Pesquisar novamente\nou\n[bold #ff6f00][2]Desistir[/]\n: '))
-                                    except KeyboardInterrupt:
-                                        print("\n[#ff6f00]O usuário não quis mais continuar.[/]\n")
-                                        proximo = False
-                                        break
-                                    except (ValueError,TypeError):
-                                        print("[bold red]Digite apenas valores númericos![/]")
+                                            for i,dados in enumerate(jogadores):
+                                                transferencia = i
+                                                salario = dados['salario']
+                                                if dados['nome'] == jogador:
+                                                    if a_carteira[0] >= salario:
+                                                        A.append(dados)
+                                                        del B[transferencia]
+                                                        a_carteira[0] = a_carteira[0] - salario
+                                                        b_carteira[0] = b_carteira[0] + salario
+                                                        print(f'Valor da carteira B foi atualizado: {b_carteira[0]}')
+                                                        print(f'Valor da carteira A foi atualizado: {a_carteira[0]}')
+                                                        break
+                                                    else:
+                                                        print('Você não tem saldo suficiente!')
+                                                else:
+                                                    afirm = False
+                                            if afirm == False:
+                                                print("[bold red]Jogador não encontrado[/]\n")
+                                            else:
+                                                break
                                     else:
-                                        if continuar == 1:
-                                            pass
-                                        elif continuar == 2:
-                                            break
+                                        print("[bold red]Digite de acordo com as sugestões![/]")
+
+                        if afirm == True:
+                            try:
+                                print('Você quer:\n[1][bold blue]Pesquisar novamente?[/]\nou\n[2][bold #ff6f00]Desistir?[/]')
+                                continuar = int(input(": "))
+                            except KeyboardInterrupt:
+                                print("\n[#ff6f00]O usuário não quis mais continuar.[/]\n")
+                                proximo = False
+                                break
+                            except (ValueError,TypeError):
+                                print("[bold red]Digite apenas valores númericos![/]")
+                            else:
+                                if continuar == 1:
+                                    pass
+                                elif continuar == 2:
+                                    proximo = False
+                                    break
 
             elif escolha == 'GOLS':
                 while afirm == True:
@@ -126,7 +141,7 @@ def comprar():
                         for i,dados in enumerate(B):
                             if dados['gols'] >= gol:
                                 print("-"*20)
-                                print(f'[bold blue]Nome: {dados["nome"]}[/]\n[bold #ff6f00]Gols: {dados["gols"]}[/]')
+                                print(f'[bold blue]Nome: {dados["nome"]}[/]\n[bold #ff6f00]Gols: {dados["gols"]}[/]\nSálario: {dados["salario"]}')
                                 print(f'{"-"*20}\n')
                                 jogadores.append(dados)
                             
@@ -135,23 +150,30 @@ def comprar():
                         else:
                             while True:
                                 try:
-                                    continuar = int(input('Você quer:\n[bold green][1]Pesquisar novamente[/]\n[bold #ff6f00][2]Desistir[/]\n[bold yellow][3]Comprar[/]\n: '))
+                                    print('Você quer:\n[1][bold blue]Pesquisar novamente[/]\n[2][bold #ff6f00]Desistir[/]\n[3][bold yellow]Comprar[/]')
+                                    continuar = int(input(": "))
                                 except KeyboardInterrupt:
                                     print("\n[#ff6f00]O usuário não quis mais continuar.[/]\n")
+                                    proximo = False
+                                    afirm = False
                                     break
                                 except (ValueError,TypeError):
                                     print("[bold red]Digite apenas números![/]")
                                 else:
                                     if continuar == 2:
                                         afirm = False
+                                        proximo = False
                                         break
                                     elif continuar == 1:
+                                        afirm = False
                                         break
                                     elif continuar == 3:
                                         try:
                                             jogador = input('Qual jogador você se interessou?: ').lower().capitalize()
                                         except KeyboardInterrupt:
                                             print("\n[#ff6f00]O usuário não quis mais continuar.[/]\n")
+                                            proximo = False
+                                            afirm = False
                                             break
                                         else:
                                             for i,dados in enumerate(jogadores):
@@ -165,16 +187,222 @@ def comprar():
                                                         b_carteira[0] = b_carteira[0] + salario
                                                         print(f'Valor da carteira B foi atualizado: {b_carteira[0]}')
                                                         print(f'Valor da carteira A foi atualizado: {a_carteira[0]}')
+                                                        break
                                                     else:
                                                         print('Você não tem saldo suficiente!')
                                                 else:
-                                                    print('Jogador não encontrado')
+                                                    afirm = False
+                                            if afirm == False:
+                                                    print("[bold red]Jogador não encontrado[/]")
+                                            else:
+                                                break
                                     else:
                                         print("[bold red]Digite de acordo com as sugestões![/]")
 
-                            if afirm == True:
+                        if afirm == True:
+                            try:
+                                print('Você quer:\n[1][bold blue]Pesquisar novamente?[/]\nou\n[2][bold #ff6f00]Desistir?[/]')
+                                continuar = int(input(": "))
+                            except KeyboardInterrupt:
+                                print("\n[#ff6f00]O usuário não quis mais continuar.[/]\n")
+                                proximo = False
+                                break
+                            except (ValueError,TypeError):
+                                print("[bold red]Digite apenas valores númericos![/]")
+                            else:
+                                if continuar == 1:
+                                    pass
+                                elif continuar == 2:
+                                    proximo = False
+                                    break
+                            
+            elif escolha == 'SALARIO':
+                while afirm == True:
+                    try:
+                        salario_desejavel = int(input('Digite o salario: '))
+                    except KeyboardInterrupt:
+                        print("\n[#ff6f00]O usuário não quis mais continuar.[/]\n")
+                        proximo = False
+                        break
+                    except (ValueError,TypeError):
+                        print('Valor invalido! Apenas valores númericos')
+                    else:
+                        for i,dados in enumerate(B):
+                            if dados["salario"] <= salario_desejavel:
+                                print('-'*20)
+                                print(f'[bold blue]Nome: {dados["nome"]}[/]\n[bold yellow]Salario: {dados["salario"]}[/]')
+                                print('-'*20)
+                                jogadores.append(dados)
+                        
+                        if len(jogadores) == 0:
+                            print("[bold red]Não exite um jogador com esse sálario.[/]\n")
+                        else:
+                            while True:
+                                try:
+                                    print('Você quer:\n[1][bold blue]Pesquisar novamente[/]\n[2][bold #ff6f00]Desistir[/]\n[3][bold yellow]Comprar[/]')
+                                    continuar = int(input(": "))
+                                except KeyboardInterrupt:
+                                    print("\n[#ff6f00]O usuário não quis mais continuar.[/]\n")
+                                    proximo = False
+                                    afirm = False
+                                    break
+                                except (ValueError,TypeError):
+                                    print("[bold red]Digite apenas números![/]")
+                                else:
+                                    if continuar == 2:
+                                        afirm = False
+                                        proximo = False
+                                        break
+                                    elif continuar == 1:
+                                        afirm = False
+                                        break
+                                    elif continuar == 3:
+                                        try:
+                                            jogador = input('Qual jogador você se interessou?: ').lower().capitalize()
+                                        except KeyboardInterrupt:
+                                            print("\n[#ff6f00]O usuário não quis mais continuar.[/]\n")
+                                            proximo = False
+                                            afirm = False
+                                            break
+                                        else:
+                                            for i,dados in enumerate(jogadores):
+                                                transferencia = i
+                                                salario = dados['salario']
+                                                if dados['nome'] == jogador:
+                                                    if a_carteira[0] >= salario:
+                                                        B.append(dados)
+                                                        del A[transferencia]
+                                                        a_carteira[0] = a_carteira[0] - salario
+                                                        b_carteira[0] = b_carteira[0] + salario
+                                                        print(f'Valor da carteira B foi atualizado: {b_carteira[0]}')
+                                                        print(f'Valor da carteira A foi atualizado: {a_carteira[0]}')
+                                                        break
+                                                    else:
+                                                        print('Você não tem saldo suficiente!')
+                                                else:
+                                                    afirm = False
+                                            if afirm == False:
+                                                    print("[bold red]Jogador não encontrado[/]\n")
+                                            else:
+                                                break
+                                    else:
+                                        print("[bold red]Digite de acordo com as sugestões![/]")
+
+                        if afirm == True:
+                            try:
+                                print('Você quer:\n[1][bold blue]Pesquisar novamente[/]\nou\n[2][bold #ff6f00]Desistir[/]')
+                                continuar = int(input(": "))
+                            except KeyboardInterrupt:
+                                print("\n[#ff6f00]O usuário não quis mais continuar.[/]\n")
+                                proximo = False
+                                break
+                            except (ValueError,TypeError):
+                                print("[bold red]Digite apenas valores númericos![/]")
+                            else:
+                                if continuar == 1:
+                                    pass
+                                elif continuar == 2:
+                                    proximo = False
+                                    break
+            else:
+                print("[bold red]Digite de acordo com as sugestões![/]")
+                                
+    elif time == 'B':
+       while proximo == True:
+            jogadores.clear()
+            afirm = True
+            try:
+                escolha = input('Digite o que você quer procurar(Idade/Gols/Salario): ').upper()
+            except KeyboardInterrupt:
+                print("\n[#ff6f00]O usuário não quis mais continuar.[/]\n")
+                break
+
+            if escolha == 'IDADE':
+                jogadores.clear()
+                try:
+                    minima = int(input('Digite idade minima: '))
+                except KeyboardInterrupt:
+                    print("\n[#ff6f00]O usuário não quis mais continuar.[/]\n")
+                    proximo = False
+                    break
+                except (ValueError,TypeError):
+                    print("[bold red]Valor invalido! Apenas valores númericos[/]")
+                else:
+                    try:
+                        maxima = int(input('Digite idade maxima: '))
+                    except KeyboardInterrupt:
+                        print("\n[#ff6f00]O usuário não quis mais continuar.[/]\n")
+                        proximo = False
+                        break
+                    except (ValueError,TypeError):
+                        print('\n[bold red]Valor invalido! Apenas valores númericos[/]\n')
+                    else:
+                        for i,dados in enumerate(A):
+                            if dados['idade'] >= minima and dados['idade'] <= maxima:
+                                print("-"*20)
+                                print(f'[bold blue]Nome:[/] {dados["nome"]}\n[bold #ff6f00]Idade:[/] {dados["idade"]}\n[bold yellow]Sálario:[/] {dados["salario"]}')
+                                print(f'{"-"*20}\n')
+                                jogadores.append(dados)
+
+                        if len(jogadores) == 0:
+                            print("[bold red]Não exite um jogador com essa idade.[/]\n")
+                        else:
+                            while True:
+                                try:
+                                    print('Você quer:\n[1][bold blue]Pesquisar novamente[/]\n[2][bold #ff6f00]Desistir[/]\n[3][bold yellow]Comprar[/]')
+                                    continuar = int(input(": "))
+                                except KeyboardInterrupt:
+                                    print("\n[#ff6f00]O usuário não quis mais continuar.[/]\n")
+                                    proximo = False
+                                    afirm = False
+                                    break
+                                except (ValueError,TypeError):
+                                    print("[bold red]Digite apenas valores númericos![/]")
+                                else:
+                                    if continuar == 2:
+                                        afirm = False
+                                        proximo = False
+                                        break
+                                    elif continuar == 1:
+                                        afirm = False
+                                        break
+                                    elif continuar == 3:
+                                        try:
+                                            jogador = input('Qual jogador você se interessou?: ').lower().capitalize()
+                                        except KeyboardInterrupt:
+                                            print("\n[#ff6f00]O usuário não quis mais continuar.[/]\n")
+                                            proximo = False
+                                            afirm = False
+                                            break
+                                        else:
+                                            for i,dados in enumerate(jogadores):
+                                                transferencia = i
+                                                salario = dados['salario']
+                                                if dados['nome'] == jogador:
+                                                    if a_carteira[0] >= salario:
+                                                        B.append(dados)
+                                                        del A[transferencia]
+                                                        a_carteira[0] = a_carteira[0] + salario
+                                                        b_carteira[0] = b_carteira[0] - salario
+                                                        print(f'Valor da carteira B foi atualizado: {b_carteira[0]}')
+                                                        print(f'Valor da carteira A foi atualizado: {a_carteira[0]}')
+                                                        print(afirm)
+                                                        break
+                                                    else:
+                                                        print('Você não tem saldo suficiente!')
+                                                else:
+                                                    afirm = False
+                                            if afirm == False:
+                                                print("[bold red]Jogador não encontrado[/]\n")
+                                            else:
+                                                break
+                                    else:
+                                        print("[bold red]Digite de acordo com as sugestões![/]")
+
+                        if afirm == True:
                                     try:
-                                        continuar = int(input('Você quer:\n[bold blue][1]Pesquisar novamente\nou\n[bold #ff6f00][2]Desistir[/]\n: '))
+                                        print('Você quer:\n[1][bold blue]Pesquisar novamente?[/]\nou\n[2][bold #ff6f00]Desistir?[/]')
+                                        continuar = int(input(": "))
                                     except KeyboardInterrupt:
                                         print("\n[#ff6f00]O usuário não quis mais continuar.[/]\n")
                                         proximo = False
@@ -185,181 +413,186 @@ def comprar():
                                         if continuar == 1:
                                             pass
                                         elif continuar == 2:
+                                            proximo = False
                                             break
-                                        else:
-                                            print("[bold red]Digite de acordo com as sugestões![/]")
-                            
 
-            elif escolha == 'SALARIO':
-                continuar = 1
-                while continuar == 1:
-                    salario_desejavel = ''
-                    while salario_desejavel == '':
-                        try:
-                            salario_desejavel = int(input('Digite o salario: '))
-                        except:
-                            print('Valor invalido! Apenas valores númericos')
-                    for i,dados in enumerate(B):
-                        jogador_completo = dados
-                        posicao = i
-                        salario = dados['salario']
-                        nome = dados['nome']
-                        gols = dados['gols']
-                        if salario <= salario_desejavel:
-                            print('-'*20)
-                            print(f'Nome: {nome}\nSalario: {salario}')
-                    print('-'*20)
-                    continuar = int(input('[1]Pesquisar novamente\n[2]Desistir\n[3]Comprar\nDigite um valor:'))
-                    while continuar != 1 and continuar != 2 and continuar != 3:
-                        continuar = int(input('[1]Pesquisar novamente\n[2]Desistir\n[3]Comprar\nDigite um valor:'))
-                    if continuar == 3:
-                        jogador = input('Qual jogador você se interessou?: ').lower().capitalize()
-                        for i,dados in enumerate(B):
-                            nome = dados['nome']
-                            transferencia = i
-                            if nome == jogador:
-                                if a_carteira >= salario:
-                                    A.append(dados)
-                                    del B[transferencia]
-                                    a_carteira = a_carteira - salario
-                                    b_carteira = b_carteira + salario
-                                    print(f'Valor da carteira B foi atualizado: {b_carteira}')
-                                    print(f'Valor da carteira A foi atualizado: {a_carteira}')
-                                else:
-                                    print('Você não tem saldo suficiente!')
-                            else:
-                                print('Jogador não encontrado')
-                                
-    elif time == 'B':
-        escolha = input('Digite o que você quer procurar(Idade/Gols/Salario): ').upper()
-        while escolha != 'IDADE' and escolha != 'GOLS' and escolha != 'SALARIO':
-            print('Informação não encontrada')
-            escolha = input('Digite o que você quer procurar(Idade/Gols/Salario): ').upper()
-        if escolha == 'IDADE':
-            continuar = 1
-            while continuar == 1:
-                minima = ''
-                while minima == '':
-                    try:
-                        minima = int(input('Digite idade minima: '))
-                    except:
-                        print('Valor invalido! Apenas valores númericos')
-                maxima = ''
-                while maxima == '':
-                    try:
-                        maxima = int(input('Digite idade maxima: '))
-                    except:
-                        print('Valor invalido! Apenas valores númericos')
-                for i,dados in enumerate(A):
-                    jogador_completo = dados
-                    posicao = i
-                    salario = dados['salario']
-                    nome = dados['nome']
-                    gols = dados['gols']
-                    idade = dados['idade']
-                    if idade >= minima and idade <= maxima:
-                        print('-'*20)
-                        print(f'Nome: {nome}\nIdade: {idade}\n')
-                print('-'*20)
-                continuar = int(input('[1]Pesquisar novamente\n[2]Desistir\n[3]Comprar\nDigite um valor:'))
-                while continuar != 1 and continuar != 2 and continuar != 3:
-                    continuar = int(input('[1]Pesquisar novamente\n[2]Desistir\n[3]Comprar\nDigite um valor:'))
-                if continuar == 3:
-                    jogador = input('Qual jogador você se interessou?: ').lower().capitalize()
-                    for i,dados in enumerate(A):
-                        nome = dados['nome']
-                        transferencia = i
-                        if nome == jogador:
-                            if b_carteira >= salario:
-                                B.append(dados)
-                                del A[transferencia]
-                                a_carteira = a_carteira + salario
-                                b_carteira = b_carteira - salario
-                                print(f'Valor da carteira B foi atualizado: {b_carteira}')
-                                print(f'Valor da carteira A foi atualizado: {a_carteira}')
-                            else:
-                                print('Você não tem saldo suficiente!')
-                        else:
-                            print('Jogador não encontrado')
-                    
-        elif escolha == 'GOLS':
-            continuar = 1
-            while continuar == 1:
-                gol = ''
-                while gol == '':
+            elif escolha == 'GOLS':
+                while afirm == True:
+                    afirm = True
                     try:
                         gol = int(input('Digite a quantidade de gols minima: '))
-                    except:
+                    except KeyboardInterrupt:
+                        print("\n[#ff6f00]O usuário não quis mais continuar.[/]\n")
+                        proximo = False
+                        break
+                    except(ValueError,TypeError):
                         print('Valor invalido! Apenas valores númericos')
-                for i,dados in enumerate(A):
-                    jogador_completo = dados
-                    posicao = i
-                    salario = dados['salario']
-                    nome = dados['nome']
-                    gols = dados['gols']
-                    if gols >= gol:
-                        print('-'*20)
-                        print(f'Nome: {nome}\nGols: {gols}')
-                print('-'*20)
-                continuar = int(input('[1]Pesquisar novamente\n[2]Desistir\n[3]Comprar\nDigite um valor:'))
-                while continuar != 1 and continuar != 2 and continuar != 3:
-                    continuar = int(input('[1]Pesquisar novamente\n[2]Desistir\n[3]Comprar\nDigite um valor:'))
-                if continuar == 3:
-                    jogador = input('Qual jogador você se interessou?: ').lower().capitalize()
-                    for i,dados in enumerate(A):
-                        nome = dados['nome']
-                        transferencia = i
-                        if nome == jogador:
-                            if b_carteira >= salario:
-                                B.append(dados)
-                                del A[transferencia]
-                                a_carteira = a_carteira + salario
-                                b_carteira = b_carteira - salario
-                                print(f'Valor da carteira B foi atualizado: {b_carteira}')
-                                print(f'Valor da carteira A foi atualizado: {a_carteira}')
-                            else:
-                                print('Você não tem saldo suficiente!')
+                    else:
+                        for i,dados in enumerate(A):
+                            if dados['gols'] >= gol:
+                                print("-"*20)
+                                print(f'[bold blue]Nome: {dados["nome"]}[/]\n[bold #ff6f00]Gols: {dados["gols"]}[/]\nSálario: {dados["salario"]}')
+                                print(f'{"-"*20}\n')
+                                jogadores.append(dados)
+                            
+                        if len(jogadores) == 0:
+                            print("[bold red]Não exite um jogador com essa quantidade minima de gols.[/]\n")
                         else:
-                            print('Jogador não encontrado')
+                            while True:
+                                try:
+                                    print('Você quer:\n[1][bold blue]Pesquisar novamente[/]\n[2][bold #ff6f00]Desistir[/]\n[3][bold yellow]Comprar[/]')
+                                    continuar = int(input(": "))
+                                except KeyboardInterrupt:
+                                    print("\n[#ff6f00]O usuário não quis mais continuar.[/]\n")
+                                    proximo = False
+                                    afirm = False
+                                    break
+                                except (ValueError,TypeError):
+                                    print("[bold red]Digite apenas números![/]")
+                                else:
+                                    if continuar == 2:
+                                        afirm = False
+                                        proximo = False
+                                        break
+                                    elif continuar == 1:
+                                        afirm = False
+                                        break
+                                    elif continuar == 3:
+                                        try:
+                                            jogador = input('Qual jogador você se interessou?: ').lower().capitalize()
+                                        except KeyboardInterrupt:
+                                            print("\n[#ff6f00]O usuário não quis mais continuar.[/]\n")
+                                            proximo = False
+                                            afirm = False
+                                            break
+                                        else:
+                                            for i,dados in enumerate(jogadores):
+                                                transferencia = i
+                                                salario = dados['salario']
+                                                if dados['nome'] == jogador:
+                                                    if b_carteira[0] >= salario:
+                                                        B.append(dados)
+                                                        del A[transferencia]
+                                                        a_carteira[0] = a_carteira[0] + salario
+                                                        b_carteira[0] = b_carteira[0] - salario
+                                                        print(f'Valor da carteira B foi atualizado: {b_carteira[0]}')
+                                                        print(f'Valor da carteira A foi atualizado: {a_carteira[0]}')
+                                                        break
+                                                    else:
+                                                        print('Você não tem saldo suficiente!')
+                                                else:
+                                                    afirm = False
+                                            if afirm == False:
+                                                    print("[bold red]Jogador não encontrado[/]")
+                                            else:
+                                                break
+                                    else:
+                                        print("[bold red]Digite de acordo com as sugestões![/]")
 
-        elif escolha == 'SALARIO':
-            continuar = 1
-            while continuar == 1:
-                salario_desejavel = ''
-                while salario_desejavel == '':
+                        if afirm == True:
+                            try:
+                                print('Você quer:\n[1][bold blue]Pesquisar novamente?[/]\nou\n[2][bold #ff6f00]Desistir?[/]')
+                                continuar = int(input(": "))
+                            except KeyboardInterrupt:
+                                print("\n[#ff6f00]O usuário não quis mais continuar.[/]\n")
+                                proximo = False
+                                break
+                            except (ValueError,TypeError):
+                                print("[bold red]Digite apenas valores númericos![/]")
+                            else:
+                                if continuar == 1:
+                                    pass
+                                elif continuar == 2:
+                                    proximo = False
+                                    break
+                            
+            elif escolha == 'SALARIO':
+                while afirm == True:
                     try:
                         salario_desejavel = int(input('Digite o salario: '))
-                    except:
+                    except KeyboardInterrupt:
+                        print("\n[#ff6f00]O usuário não quis mais continuar.[/]\n")
+                        proximo = False
+                        break
+                    except (ValueError,TypeError):
                         print('Valor invalido! Apenas valores númericos')
-                for i,dados in enumerate(A):
-                    jogador_completo = dados
-                    posicao = i
-                    salario = dados['salario']
-                    nome = dados['nome']
-                    gols = dados['gols']
-                    if salario <= salario_desejavel:
-                        print('-'*20)
-                        print(f'Nome: {nome}\nSalario: {salario}')
-                print('-'*20)
-                continuar = int(input('[1]Pesquisar novamente\n[2]Desistir\n[3]Comprar\nDigite um valor:'))
-                while continuar != 1 and continuar != 2 and continuar != 3:
-                    continuar = int(input('[1]Pesquisar novamente\n[2]Desistir\n[3]Comprar\nDigite um valor:'))
-                if continuar == 3:
-                    jogador = input('Qual jogador você se interessou?: ').lower().capitalize()
-                    for i,dados in enumerate(A):
-                        nome = dados['nome']
-                        transferencia = i
-                        if nome == jogador:
-                            if b_carteira >= salario:
-                                B.append(dados)
-                                del A[transferencia]
-                                a_carteira = a_carteira + salario
-                                b_carteira = b_carteira - salario
-                                print(f'Valor da carteira B foi atualizado: {b_carteira}')
-                                print(f'Valor da carteira A foi atualizado: {a_carteira}')
-                            else:
-                                print('Você não tem saldo suficiente!')
+                    else:
+                        for i,dados in enumerate(A):
+                            if dados["salario"] <= salario_desejavel:
+                                print('-'*20)
+                                print(f'[bold blue]Nome: {dados["nome"]}[/]\n[bold yellow]Salario: {dados["salario"]}[/]')
+                                print('-'*20)
+                                jogadores.append(dados)
+                        
+                        if len(jogadores) == 0:
+                            print("[bold red]Não exite um jogador com esse sálario.[/]\n")
                         else:
-                            print('Jogador não encontrado')
-        else:
-            pass
+                            while True:
+                                try:
+                                    print('Você quer:\n[1][bold blue]Pesquisar novamente[/]\n[2][bold #ff6f00]Desistir[/]\n[3][bold yellow]Comprar[/]')
+                                    continuar = int(input(": "))
+                                except KeyboardInterrupt:
+                                    print("\n[#ff6f00]O usuário não quis mais continuar.[/]\n")
+                                    proximo = False
+                                    afirm = False
+                                    break
+                                except (ValueError,TypeError):
+                                    print("[bold red]Digite apenas números![/]")
+                                else:
+                                    if continuar == 2:
+                                        afirm = False
+                                        proximo = False
+                                        break
+                                    elif continuar == 1:
+                                        afirm = False
+                                        break
+                                    elif continuar == 3:
+                                        try:
+                                            jogador = input('Qual jogador você se interessou?: ').lower().capitalize()
+                                        except KeyboardInterrupt:
+                                            print("\n[#ff6f00]O usuário não quis mais continuar.[/]\n")
+                                            proximo = False
+                                            afirm = False
+                                            break
+                                        else:
+                                            for i,dados in enumerate(jogadores):
+                                                transferencia = i
+                                                salario = dados['salario']
+                                                if dados['nome'] == jogador:
+                                                    if a_carteira[0] >= salario:
+                                                        A.append(dados)
+                                                        del B[transferencia]
+                                                        a_carteira[0] = a_carteira[0] + salario
+                                                        b_carteira[0] = b_carteira[0] - salario
+                                                        print(f'Valor da carteira B foi atualizado: {b_carteira[0]}')
+                                                        print(f'Valor da carteira A foi atualizado: {a_carteira[0]}')
+                                                        break
+                                                    else:
+                                                        print('Você não tem saldo suficiente!')
+                                                else:
+                                                    afirm = False
+                                            if afirm == False:
+                                                    print("[bold red]Jogador não encontrado[/]\n")
+                                            else:
+                                                break
+                                    else:
+                                        print("[bold red]Digite de acordo com as sugestões![/]")
+
+                        if afirm == True:
+                            try:
+                                print('Você quer:\n[1][bold blue]Pesquisar novamente[/]\nou\n[2][bold #ff6f00]Desistir[/]')
+                                continuar = int(input(": "))
+                            except KeyboardInterrupt:
+                                print("\n[#ff6f00]O usuário não quis mais continuar.[/]\n")
+                                proximo = False
+                                break
+                            except (ValueError,TypeError):
+                                print("[bold red]Digite apenas valores númericos![/]")
+                            else:
+                                if continuar == 1:
+                                    pass
+                                elif continuar == 2:
+                                    proximo = False
+                                    break
+            else:
+                print("[bold red]Digite de acordo com as sugestões![/]")
