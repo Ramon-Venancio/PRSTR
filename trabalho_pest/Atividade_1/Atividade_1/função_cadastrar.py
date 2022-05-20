@@ -17,15 +17,29 @@ def cadastrar():
             proximo = False
             break
         else:
-            if len(jogador["nome"]) == 0:
-                print("[bold red]Valor invalido![/]")
-            else:
+            comp = jogador["nome"].split(" ")
+
+            for i,n in enumerate(comp):
+                try:
+                    int(n)
+                except:
+                    for m in n:
+                        try:
+                            int(m)
+                        except:
+                            pass
+                        else:
+                            afirm = False
+                else:
+                    afirm = False
+            
+            if afirm == True and not len(jogador["nome"]) == 0:
                 try:
                     jogador["nome"] = int(jogador["nome"])
                     print("[bold red]Só pode letras![/]\n")
                 except:
                     nome_comp = jogador["nome"].split(" ")
-                    
+                        
                     for i,n in enumerate(nome_comp):
                         if len(n) == 0:
                             afirm = False
@@ -59,8 +73,8 @@ def cadastrar():
                                                 break
                                         else:
                                             print("[bold red]Valor invalido![/]")
+                                                        
                                                     
-                                                
                             if proximo == True:
                                 nome_comp.append(composto)
                                 nome_comp = nome_comp[0] + ' ' + nome_comp[1]   
@@ -75,6 +89,8 @@ def cadastrar():
                             break
                     else:
                         print("[bold red]Valor invalido![/]")
+            else:
+                print("[bold red]Valor invalido![/]")
 
 
     if proximo == True:
@@ -100,7 +116,23 @@ def cadastrar():
                 proximo = False
                 break
             else:
-                if len(jogador['nacionalidade']) == 0:
+                comp = jogador["nacionalidade"].split(" ")
+                
+                for i,n in enumerate(comp):
+                    try:
+                        int(n)
+                    except:
+                        for m in n:
+                            try:
+                                int(m)
+                            except:
+                                pass
+                            else:
+                                afirm = False
+                    else:
+                        afirm = False
+
+                if len(jogador['nacionalidade']) == 0 and afirm == False:
                     print("[bold red]Digite uma nacionalidade valida![/]\n")
                 else:
                     comp = jogador['nacionalidade'].split(" ")

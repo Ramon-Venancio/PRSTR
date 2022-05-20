@@ -1,8 +1,7 @@
-def teste(n):
-    if n == "Sálario":
-        print("Sálario")
-    elif n == "Gol":
-        print("Gol")
+tipo = 'sad 235'
+l = ''
 
-teste("Sálario")
-teste("Gol") 
+if not len(l) == 0:
+    print("deu certo")
+else:
+    print("Não deu certo")

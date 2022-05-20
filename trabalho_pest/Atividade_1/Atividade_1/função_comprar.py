@@ -29,7 +29,6 @@ def comprar():
                 break
 
             if escolha == 'IDADE':
-                jogadores.clear()
                 try:
                     minima = int(input('Digite idade minima: '))
                 except KeyboardInterrupt:
